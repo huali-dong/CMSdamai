@@ -32,8 +32,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 // 启用路由工具
 app.use('/api/'+ version +'/position', positionRouter);
 app.use("/api/"+version+"/singer",singerRouter);
-
-
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

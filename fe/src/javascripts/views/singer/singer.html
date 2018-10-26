@@ -1,11 +1,25 @@
-<div class="box position-list">
+<section class="content-header" style="margin-bottom:30px">
+      <h1>
+        明星信息
+        <small>列表</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
+        <li class="active">Here</li>
+      </ol>
+</section>
+<div class="box singer-list">
     <div class="box-header with-border">
       <h3 class="box-title">
         <button id="addbtn" class="btn btn-block btn-success"><span class="fa fa-plus-circle"></span> 添加</button>
+        
+      </h3>
+      <h3 class="box-title" style="margin-left:30px">
+          <button id="reorder" class="btn btn-block btn-info" value="true" > 是否按照姓名排序</button>
       </h3>
       <div class="box-tools">
         <div class="input-group input-group-sm" style="width: 150px;">
-          <input type="text" id="keywords" value="" name="pos_search" class="form-control pull-right" placeholder="搜索">
+          <input type="text" id="keywords" value="" name="pos_search" class="form-control pull-right" placeholder="按照名字搜索歌手">
   
           <div class="input-group-btn">
             <button type="button" id="possearch" class="btn btn-default"><i class="fa fa-search"></i></button>
@@ -14,32 +28,34 @@
       </div>
     </div>
     <!-- /.box-header -->
+   
     <div class="box-body">
-      
-      <table class="table table-bordered position-list__tabel">
+        {{if data.result.length>0}}
+      <table class="table table-bordered table-hover" style="text-align: center;">
         <tr>
-          <th style="width: 10px">#</th>
-          <th>图片</th>
-          <th>名字</th>
-          <th>国籍</th>
-          <th>名族</th>
-          <th>经纪公司</th>
-          <th>代表作品</th>
-          <th>职业</th>
-          <th >操作</th>
+          <th style="width:10px; text-align: center">#</th>
+          <th style="text-align: center">图片</th>
+          <th style="text-align: center">名字</th>
+          <th style="text-align: center">生日</th>
+          <th style="text-align:center">国籍</th>
+          <th style="text-align:center">经纪公司</th>
+          <th style="text-align:center">代表作品</th>
+          <th style="text-align:center">职业</th>
+          <th style="text-align:center">操作</th>
         </tr>
+        {{ each data.result }}
         <tr data-id="{{ $value._id }}">
           <td>{{ $index + 1 }}</td>
-          <td><img width="50" height="50" src="http://10.9.189.194:3000{{$value.companyLogo}}"
+          <td><img width="80" height="80" src="http://localhost:3000{{$value.personLogo}}"
               alt=""></td>
-          <td>{{ $value.companyName }}</td>
-          <td>{{ $value.positionName }}
+          <td  style="display: table-cell;vertical-align: middle">{{ $value.name}}</td>
+          <td style="display: table-cell;vertical-align: middle">{{ $value.birthday}}</td>
+          <td style="display: table-cell;vertical-align: middle">{{ $value.city}}
           </td>
-          <td>{{ $value.city }}</td>
-          <td>{{ $value.formatTime }}</td>
-          <td>{{ $value.salary }}</td>
-          <td></td>
-          <td>
+          <td style="display: table-cell;vertical-align: middle">{{ $value.companyName }}</td>
+          <td style="display: table-cell;vertical-align: middle">{{ $value.works}}</td>
+          <td style="display: table-cell;vertical-align: middle">{{ $value.occupation }}</td>
+          <td style="display: table-cell;vertical-align: middle">
             <button class="btn btn-sm btn-primary pos-update" posid="" pageno="" keywords=""><span class="fa fa-edit"></span>
               修改</button>
             <button class="btn btn-sm btn-danger pos-remove" posid="" pageno="" pagecount="" pagesize="" keywords=""
@@ -52,9 +68,13 @@
     </div>
     <div class="box-footer clearfix">
       <ul class="pagination pagination-sm no-margin pull-right">
-        <li><a href="#">&laquo;</a></li>
-        <li class="active"><a href="#">1</a></li>
-        <li><a href="#">&raquo;</a></li>
+          {{set pageTotalNum = data.pageInfo.totalPage}}
+          {{set pageNum = data.pageInfo.pageNo}}
+        <li><a href="#/singer-list?pageNo=<%= pageNum >1 ?pageNum-1:pageNum %>">&laquo;</a></li>
+        <% for(var i=0; i< pageTotalNum; i++ ){%>
+          <li class="{{if pageNum == i+1 }} active {{/if}}"><a href="#/singer-list?pageNo=<%= i+1 %>"><%= i+1 %> </a></li>
+        <% } %>
+        <li><a href="#/singer-list?pageNo=<%= pageNum < pageTotalNum? ((~~pageNum) +1): pageNum %> ">&raquo;</a></li>
       </ul>
     </div>
     {{ else }}
@@ -62,8 +82,12 @@
           <div class="box-header with-border">
             <!-- <h3 class="box-title">Blank Box</h3> -->
           </div>
-          <div class="box-body">
-              当前没有歌手信息，快去添加吧...
+          <div class="box-body" id="inpuMsg">
+            {{ if data.search == ""}}
+              当前没有明星信息，快去添加吧...
+             {{else}}
+             你所查找的明星不存在,可以去加入进来
+              {{ /if}}
           </div>
           <!-- /.box-body -->
         </div>

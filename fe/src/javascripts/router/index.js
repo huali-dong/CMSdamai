@@ -17,7 +17,7 @@ var router = null
 const _init = () => {
     // 实例化路由工具
     router = new SMERouter('router-view')
-
+    
     // 中间件会先执行 为导航按钮添加高亮样式
     router.use((req, res, next) => {
         _activeLink(req.route) 
@@ -28,11 +28,15 @@ const _init = () => {
         res.render(home_template)
     })
     // 保存职位路由
-    router.route('/position-save', position_controller.save)
+    router.route('/position-save', position_controller.save);
     // 职位列表路由
-    router.route('/position-list', position_controller.list)
-    router.route('/position-update', position_controller.update)
-    router.route("/singer-list",singer_controller.list)
+    router.route('/position-list', position_controller.list);
+    router.route('/position-update', position_controller.update);
+    router.route("/singer-list",singer_controller.list);
+    router.route("/singer-add",singer_controller.add);
+    router.route("/singer-update",singer_controller.update);
+    router.route("/singer-search",singer_controller.search);
+
 
 
     // 404路由

@@ -1,5 +1,5 @@
 
-const toast = (text, options) => {
+const toast = (text) => {
     $.toast({ 
         text , 
         showHideTransition : 'fade',
@@ -8,7 +8,7 @@ const toast = (text, options) => {
         stack : 5,
         textAlign : 'left',
         position : 'top-center'
-    }) 
+    })
 }
 
 export default toast
