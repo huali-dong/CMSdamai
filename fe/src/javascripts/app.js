@@ -6,6 +6,7 @@ import router from './router'
 
 // 主体结构视图
 const body_template = require('./views/body.html')
+
 // 渲染整体内容结构
 $('#wrapper').html(body_template)
 

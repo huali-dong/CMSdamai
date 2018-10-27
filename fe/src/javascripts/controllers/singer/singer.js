@@ -11,7 +11,7 @@ const list = async (req,res)=>{
     req.query = req.query || {};
     let {pageNo,pageSize,search,reorder} = req.query;
     let _dataList = await singer_models.list({pageNo,pageSize,search,reorder});
-    console.log(_dataList)
+    // console.log(_dataList)
     let html = template.render(singer_tempalte,{
         data: _dataList.data
     })
@@ -33,7 +33,6 @@ const ListbindEvent = (pageInfo)=>{
         bus.emit("go","/singer-list?search="+keywords);
     })
     $("#reorder").on("click",function(){
-
         if($(this).val()=="true"){
             bus.emit("go","/singer-list?reorder=1");
         }
@@ -42,7 +41,7 @@ const ListbindEvent = (pageInfo)=>{
     $(".pos-update").on("click",function(){
         //点击的时候让req.body属性上有这个id号。然后根据这个id号去数据库查找，再渲染到页面上
         let id = $(this).parents("tr").data("id");
-        bus.emit("go","/singer-update",{id});
+        bus.emit("go","/singer-update?pageNo="+pageInfo.pageNo,{id});
     });
 
     //如果删除页只有一条数据，删除完之后就没有了，就必须调整一下，让pageNo-1;可以通过获取tr的值,也可以通过返回值处理
@@ -101,44 +100,44 @@ const addbindEvent =()=>{
 const update = async (req,res)=>{
     //这里的id是上面存到req.body属性上的
     let {id} =  req.body;
+    let _pageNo = req.query.pageNo || 1;
+    console.log(_pageNo)
     let data =  (await singer_models.findOne({id})).data;
     let html = template.render(update_template,{
         data:data
     })
     // console.log(data.personLogo);
     res.render(html);
-    updatebindEvent();
+    updatebindEvent(_pageNo);
 }
 
-const updatebindEvent = ()=>{
+const updatebindEvent = (_pageNo)=>{
     $(".singer-update #back").on("click",()=>{
         bus.emit("go","/singer-list")
     });
-    $(".singer-update #update-form").submit(handleUpdateSubmit);
-
+    $(".singer-update #update-form").submit(function(e){
+        e.preventDefault();
+        handleUpdateSubmit(_pageNo)
+    });
     //改变显示image的路径
     $("#changeFile").on("change",function(){
         document.getElementById("updateImage").src=window.URL.createObjectURL(this.files[0]);
     })
 }
-const handleUpdateSubmit =async function(e){
-    e.preventDefault();
+const handleUpdateSubmit =async function(_pageNo){
     // let _datastr = $(this).serialize();
     // let _data = qs.parse(_datastr);
+    //在那一页修改之后，还是返回当前页
+    let pageNo = _pageNo;
     let _result = await singer_models.update();
     modal(_result,{
         callback:()=>{
-            bus.emit("go","/singer-list");
+            bus.emit("go","/singer-list?pageNo="+pageNo);
         }
     })
-}
-
-const search =()=>{
-
 }
 export default {
     list,
     add,
     update,
-    search
 }

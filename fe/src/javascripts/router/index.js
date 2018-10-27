@@ -9,12 +9,15 @@ import not_found_template from '../views/404.html'
 // position 控制器
 import position_controller from '../controllers/position/position'
 
-//product页面控制器
+//singer页面控制器
 import singer_controller from "../controllers/singer/singer"
 
 //movie页面控制器
 import movie_controller from "../controllers/movie/movie"
 
+
+//page-header页面控制器
+import page_header_controller from "../controllers/page-header"
 var router = null
 
 // 启动路由的方法
@@ -26,6 +29,9 @@ const _init = () => {
     router.use((req, res, next) => {
         _activeLink(req.route) 
     })
+
+    //匹配头部信息,如果不加/，就不会再执行
+    router.route("/",page_header_controller.render);
 
     // 开始匹配各个路由
     router.route('/home', (req, res, next) => { // 当路由切换进来的时候执行
@@ -73,6 +79,14 @@ const _init = () => {
     // 给按钮添加事件
     _navLink()
 }
+
+// //page-header中间件
+// const handerPage = ()=>{
+//     page_header_controller.render();
+// }
+
+
+
 
 // 给导航按钮添加点击事件
 const _navLink = (selector) => {
