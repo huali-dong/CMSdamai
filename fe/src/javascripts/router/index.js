@@ -11,6 +11,10 @@ import position_controller from '../controllers/position/position'
 
 //product页面控制器
 import singer_controller from "../controllers/singer/singer"
+
+//movie页面控制器
+import movie_controller from "../controllers/movie/movie"
+
 var router = null
 
 // 启动路由的方法
@@ -38,6 +42,12 @@ const _init = () => {
     router.route("/singer-search",singer_controller.search);
 
 
+    //电影路由
+    router.route("/movie-lead",movie_controller.lead)
+    router.route("/movie-list",movie_controller.list)
+    router.route("/movie-save",movie_controller.save)
+    router.route("/movie-update",movie_controller.update)
+
 
     // 404路由
     router.route('/not-found', (req, res, next) => { // 当路由切换进来的时候执行
@@ -55,6 +65,7 @@ const _init = () => {
     })
 
     // 因为在控制器中无法使用到router，所以给bus绑定事件，在其他模块中触发bus的事件
+    //enevt.on('xx',()=>{})
     bus.on('go', (path, body = {}) =>  router.go(path, body) )
     bus.on('back', () =>  router.back() )  
     
