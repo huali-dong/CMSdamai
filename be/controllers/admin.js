@@ -25,9 +25,9 @@ const signup = async (req,res,next)=>{
 // 登录
 const signin = async (req,res,next)=>{
     //先判断有没有这个用户
-    console.log(req.body)
+    // console.log(req.body)
     let _judge_result = await admin_model.judgeUserByUsername(req.body.username)
-    console.log(_judge_result)
+    // console.log(_judge_result)
     //_judge_result返回的是一个数组，数组中存着一个个数据对象
     if ( !!_judge_result.length ) { // 如果有这个用户
         // 登录
