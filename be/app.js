@@ -11,6 +11,9 @@ var positionRouter = require('./routes/position');
 var singerRouter = require("./routes/singer");
 var movieRouter = require("./routes/movie");
 
+//登录
+var adminRouter = require("./routes/admin");
+
 // 应用程序
 var app = express();
 
@@ -36,6 +39,9 @@ app.use("/api/"+version+"/singer",singerRouter);
 <<<<<<< HEAD
 =======
 app.use('/api/'+ version +'/movie', movieRouter);
+
+//注册路由
+app.use('/api/'+ version +'/admin', adminRouter);
 
 
 >>>>>>> cc2cffad5b332be7e2671c5582afd3d63df45f0b
