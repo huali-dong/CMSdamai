@@ -99,7 +99,7 @@ const listpage =async ({pageNo =1,pageSize = 3,search ="",reorder = -1})=>{
     //skip是mongodb里面的从哪里开始查找
     //limit是指查出几条数据
    //要获取页面所有的数据
-   console.log(reorder)
+//    console.log(reorder)
    let listall = await list(_query);
     return singerModel.find(_query)
         .sort({createTime:-1})
